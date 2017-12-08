@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+----------------------------------
+
+Aqui empiezan los apuntes de estadistica básica. 
+
+```{r}
+ x <- c(0.32,0.36,0.24,0.11,0.11,0.44,2.79,2.99,3.47,0.23,0.55, 3.21,4.02,0.23)
+x
+```
+La media aritmetica o muestral
+```{r}
+mean(x)
+```
+el número de elementos es 
+```{r}
+length(x)
+```
+Media ajustada
+Se elimina un porcentaje de los datos inferiores y el mismo porcentaje de los valores superiores.  Por lo tanto se intenta reducir el efecto de los valores extremos. En este caso eliminamos el 10% por encima y por debajo. 
+```{r}
+mean(x,trim=0.1)
+```
+
+Otra forma de localizar los datos es con los percentiles muestrales. El percentil de orden p es un valor que tiene por debajo el 100xp por ciento de datos y por encima el 100 x(1-p)
+```{r}
+sort(x)
+```
+Para saber cuantos son menores de 1
+```{r}
+Fn = ecdf(x)
+Fn(1)
+```
+La proporcion de datos que son inferioresa 1 es 0.6428571. el valor 1 es el percentil de orden 0.6428571 de  los datos.
+
+La mediana muestral esel percentil de orden 0.5 
+
+```{r}
+median(x)
+```
+El percentil p=0,25 se le concoce como cuartil inferior y al percentil 0,75 se le conoce como cuartil superior
+```{r}
+quantile(x,probs=0.25)
+quantile(x,probs=0.50)
+quantile(x,probs=0.75)
+quantile(x,probs = c(0.25,0.75))
+```
+Ahora queremos saber la dispersion de nuestros datos 
+```{r}
+var(x)
+sd(x)
+```
+El rango es el valor maximo y minimo de la muestra
+```{r}
+range(x)
+
+c(min(x),max(x))
+max(x)-min(x)
+diff(range(x))
+```
+El rango intercuartilico es la diferencia entre los percentiles 0.75 y 0.25 y es una medida más robusta. 
+```{r}
+IQR(x)iqr
+```
+
+En resumen 
+```{r}
+summary(x)
+```
+
+
