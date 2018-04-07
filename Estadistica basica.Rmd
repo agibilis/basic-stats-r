@@ -134,3 +134,169 @@ quantile(datos2,probs=0.9)
 La media tiene mucha variacion al introducir nuevos valores extremos. 
 La mediana varia poco al introducir un numero limitado de valores
 La media recortada al eliminar la parte superior de los extremos limita la variacion de los datos. Igualmente los percentiles de orden 0.1 y 0,9 eliminan parte de los extremos añadidos
+
+
+...................................
+
+Las muestras de aguas se tomaron en dos localizaciones de la albufera. 8 primeras en Catarroja y las 6 ultimas en el Palmar. 
+
+```{r}
+y<-c(1,1,1,1,1,1,1,1,2,2,2,2,2,2)
+
+```
+estamos ahora contando las distintas observaciones es lo mismo que la frecuencia. Contamos el número de datos que se ha observado en cada zona. Obtenemos de un modo simple la frecuencia absoluta.
+```{r}
+table(y)
+```
+Si dividimos las frecuencias absolutas por el número total de datos obtenemos las frecuencias absolutas.
+```{r}
+prop.table(table(y))
+```
+
+Podemos obtener las frecuencias relaticva dividiendo los conteos o frecuencias por esta suma. 
+
+
+```{r}
+table(y)/sum(table(y))
+```
+```{r}
+barplot(table(y))
+barplot(prop.table((table(y))))
+```
+
+```{r}
+pie(table(y))
+```
+```{r}
+hist(x)
+```
+Se puede cambiar el numero de clases. Estos graficos son muy sensibles a la eleccion del usuario por lo que no es muy recomendable aunque si extendido. 
+
+```{r}
+hist(x,breaks=10)
+```
+
+Mediante el diagrama de cajas o Boxplot se engloba la informacion de los cuartiles que se corresponden con los bordes superior e inferior de la caja. La linea interior destacada representa la mediana y por encima y debajo de la caja se muestran los extremos de los datos maximo y minimo. 
+
+```{r}
+x1=c(x,c(7,9))
+```
+```{r}
+boxplot(x)
+```
+```{r}
+boxplot(x1)
+```
+
+Podemos comparar muestras de forma grafica y muy intuitiva mediante los diagramas de bloques
+
+```{r}
+boxplot(x~y)
+```
+
+Estimadores Kernel de la densidad
+
+el estimador 
+```{r}
+plot(density(x))
+```
+Función de distribución muestral (duncion acumulativa)
+
+Para cada punto x consideramos el conjunto formado por todos los datos xi que son menores o iguales que x. Contamos el número de puntos en este conjunto (su cardinal) y lo dividimos por el total de datos. En resumen, Fn(x) nos da la proporción de datos que son menores o iguales que x. Y esto lo consideramos para todos los valores de x posibles.
+
+```{r}
+ecdf(x)
+plot(ecdf(x))
+```
+Otra forma de sacarlo es 
+```{r}
+library(Hmisc)
+Ecdf(x)
+```
+
+Ahora buscaremos datos anomalos 
+
+Vamos a añadir unos datos anomalos 
+```{r}
+
+x2=c(x,c(0,9,14))
+x2
+```
+* Dados los datos calculamos su media y desviación típica muestrales: x ̄ y s. Se entiende por dato anómalo aquél que está fuera del intervalo [ x ̄ − 3 s , x ̄ − 3 s ] , es decir, que o bien es extremo porque es menor que x ̄ − 3s o bien es extremo porque es mayor que x ̄ + 3s.
+
+Y veamos si son anómalos en el sentido que acabamos de definir.
+
+```{r}
+x2[x2 < mean(x2) - 3 * sd(x2)]
+```
+Veamos el valor añadido por arriba
+```{r}
+x2[x2 > mean(x2) + 3 * sd(x2)]
+```
+El segundo procedimiento utiliza los cuartiles, que se denotan por q25 y q75 los percentiles 25% y 75% o cuartil inferrior y superior
+                Si IQR=q75-q25
+ [q25   -1,5xIQR, q75 + 1,5xIQR]
+ 
+```{r}
+(lw = quantile(x2,probs=0.25)-1.5 * IQR(x2))
+```
+ 
+```{r}
+(up = quantile(x2,probs=0.75)+1.5 * IQR(x2))
+```
+Veamos si hay puntos por debajo
+```{r}
+x2[x2<lw]
+```
+no hay numeros por debajo.
+
+```{r}
+x2[x2>up]
+```
+
+Si vemos que hay 2 por encima
+
+----------------------------------------------
+
+Realizamos varios histogramas cambiando el numero de clases
+
+```{r}
+hist(x)
+hist(x,breaks=2)
+hist(x,breaks=3)
+hist(x,breaks=5)
+hist(x,breaks=15)
+```
+
+Como puede apreciarse el histograma el funcion del número de clases nos muestra un dibujo distinto. Este es un claro ejemplo de que no es un buen metodo. 
+
+Si queremos representar el estimador kernel 
+
+```{r}
+plot(density(x))
+# doblamos el ancho de banda
+plot(density(x,adjust=2))
+# dividimos el ancho de banda
+plot(density(x,adjust=0.5))
+```
+
+Transformacion lineal ortogonal
+
+Las componentes principales definen un nuevo sistema de ejes coordenados sobre los que realizar un una nueva proyeccion de los valores originales. 
+
+X e Y  son dos vectores columna y A es una matriz  si Y = A X se dice que A es la matriz de transformacion en Y .  
+
+```{r}
+A1 <- matrix(c(0.61625,0.78755,-0.78755,0.61625),ncol=2)
+A2 <- matrix(c(0.7071,0.7071,-0.7071,0.7071),ncol=2)
+
+A1
+A2
+# si las multiplicamos por su transformada %*% obtenemos la I 
+
+A1%*%t(A1)
+
+A2%*%t(A2)
+```
+
+
